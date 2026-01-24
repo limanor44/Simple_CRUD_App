@@ -8,17 +8,31 @@ namespace Simple_CRUD_App.Data.Repositories
     public class ContactRepository : IRepository<Contact>
     {
         private readonly LocalDbContext _db;
-        public ContactRepository(LocalDbContext db) {
+        public ContactRepository(LocalDbContext db)
+        {
             _db = db;
         }
-        public  Task<Contact> CreateAsync(Contact entity)
+        public async Task<Contact?> CreateAsync(Contact entity)
         {
-            throw new NotImplementedException();
+            if (await _db.Database.CanConnectAsync())
+            {
+                await _db.Contacts.AddAsync(entity);
+                await _db.SaveChangesAsync();
+                return entity;
+            }
+            return null;
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            if(await _db.Database.CanConnectAsync() && 
+                await _db.Contacts.FindAsync(id) is Contact contact)
+            {
+                _db.Contacts.Remove(contact);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
         public Task<List<Contact>> GetAllAsync()
@@ -28,12 +42,21 @@ namespace Simple_CRUD_App.Data.Repositories
 
         public Task<Contact?> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _db.Contacts.FindAsync(id).AsTask();
         }
 
-        public Task UpdateAsync(Contact entity)
+        public async Task<bool> UpdateAsync(int id, Contact entity)
         {
-            throw new NotImplementedException();
+            if(await _db.Database.CanConnectAsync() &&
+                await _db.Contacts.FindAsync(id) is Contact dbContact)
+            {
+                entity.Id = id;
+                _db.Entry(dbContact).CurrentValues.SetValues(entity);
+                await _db.SaveChangesAsync();
+                return true;
+            }
+            return false;
+            
         }
     }
 }
