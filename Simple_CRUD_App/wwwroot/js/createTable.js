@@ -8,7 +8,7 @@ function createTableBody(data) {
     const tableData = data.map(item => {
         const birthDate = new Date(item.birthDate);
         return (
-            `<tr onclick = 'console.log(${item.id})'>
+            `<tr data-bs-toggle="modal"  data-bs-target="#contactModal" data-bs-whatever="edit" id-row=${item.id} )'>
                 <td scope="row" hidden >${item.id}</td>
                 <td scope="row">${item.name}</td>
                 <td scope="row">${item.mobilePhone}</td>
@@ -25,7 +25,26 @@ function getDateFormat(date) {
         ${date.getDate()}.${date.getMonth()}.${date.getFullYear()}
     `;
 }
+//функция валидации полей формы
+function fieldsValidation() {
+    const phoneRegEx = '^\+375\d{9}$';
 
-function openCreateModal(id) {
+    const modalBody = document.querySelector('.modal-body');
+    // console.log(modalBody);
+    for (item of modalBody.children) {
+        // console.log(item.tagName);
+        if (item.tagName === 'INPUT') {
+            switch (item.name) {
+                case 'name':
 
+                    break;
+                case 'mobilePhone':
+                    break;
+                case 'jobTitle':
+                    break;
+                case 'birthDate':
+                    break;
+        }
+        }
+    }
 }

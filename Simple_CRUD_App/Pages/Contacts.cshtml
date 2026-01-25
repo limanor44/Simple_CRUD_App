@@ -5,7 +5,6 @@
 }
 <script src="~/js/createTable.js"></script>
 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#contactModal" data-bs-whatever="create">Добавить</button>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#contactModal" data-bs-whatever="edit">Изменить</button>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -17,7 +16,7 @@
     </thead>
     <tbody id="table-body"></tbody>
 </table>
-<!-- Модальное окно добавления контакта -->
+<!-- Модальное окно добавления/изменения контакта -->
 <div class="modal fade" id="contactModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -28,7 +27,7 @@
             <form action="/api/contacts" method="post">
                 <div class="modal-body">
                     <label for="form-name" class="form-label">ФИО</label>
-                    <input id="form-name" type="text" name="name" class="form-control" required>
+                    <input id="form-name" type="text" name="name" class="form-control" pattern="^\+375\d{9}$" required>
                     <label for="form-phone" class="form-label">Номер телефона</label>
                     <input id="form-phone" type="tel" name="mobilePhone" class="form-control" required>
                     <label for="form-job-title" class="form-label">Профессия</label>
@@ -38,7 +37,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <button type="button" class="btn btn-outline-primary">Сохранить</button>
+                    <button type="button" class="btn btn-outline-primary" onclick="fieldsValidation()">Сохранить</button>
                 </div>
             </form>
         </div>
@@ -56,13 +55,15 @@
     const exampleModal = document.getElementById('contactModal');
     if (exampleModal) {
       exampleModal.addEventListener('show.bs.modal', event => {
-        const button = event.relatedTarget
-        
-        const recipient = button.getAttribute('data-bs-whatever')
-        
+        const targetElement = event.relatedTarget
+
+        // console.log(button);
+
+        const recipient = targetElement.getAttribute('data-bs-whatever');
+
         // console.log(recipient);
         
-        const modalTitle = exampleModal.querySelector('.modal-title')
+        const modalTitle = exampleModal.querySelector('.modal-title');
 
         // const submitBtn = 
 
@@ -73,6 +74,8 @@
 
             case 'edit' :
             modalTitle.textContent = `Изменить контакт`
+            const idRow = targetElement.getAttribute('id-row');
+            // console.log(idRow);
             break;
         }
       });
