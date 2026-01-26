@@ -18,15 +18,15 @@ var app = builder.Build();
 
 //Эндопоинты api
 
-//
+//получение списка всех контактов
 app.MapGet("/api/contacts", async (ContactService service) => await service.GetAllContactsAsync());
-//
+//получение контакта по id
 app.MapGet("/api/contacts/{id}", async (ContactService service, int id) => {
     var contact =  await service.GetContactByIdAsync(id);
     return contact is null ?  Results.NotFound() : Results.Ok(contact);
 });
 
-//
+//запись нового контакта
 app.MapPost("/api/contacts", async (ContactService service, Contact? contact) => {
     if(contact == null)
     {
@@ -36,7 +36,7 @@ app.MapPost("/api/contacts", async (ContactService service, Contact? contact) =>
     return createdContact is null ? Results.BadRequest() : Results.Created();
 });
 
-//
+//полное обновление контакта по id
 app.MapPut("/api/contacts/{id}", async (ContactService service, int id, Contact? contact) => {
     if(contact == null || id < 0)
     {
@@ -46,7 +46,7 @@ app.MapPut("/api/contacts/{id}", async (ContactService service, int id, Contact?
     return result ? Results.NoContent() : Results.NotFound();
 });
 
-//
+//удаление контакта по id
 app.MapDelete("/api/contacts/{id}", async (ContactService service, int id) => {
     var result = await service.DeleteByIdAsync(id);
     return result ? Results.NoContent() : Results.NotFound();

@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = "Контакты";
 }
-<script src="~/js/createTable.js"></script>
+<script src="~/js/contacts.js"></script>
+<script src="~/js/modal.js"></script>
+<script src="~/js/fetchData.js"></script>
 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#contactModal" data-bs-whatever="create">Добавить</button>
 <table class="table table-hover">
     <thead>
@@ -38,6 +40,7 @@
                     <input id="form-birth-date" type="date" name="birthDate" class="form-control" required>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" id="deleteBtn" class="btn btn-outline-danger" style="display: none">Удалить</button>
                     <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Закрыть</button>
                     <button type="submit" class="btn btn-outline-primary">Сохранить</button>
                 </div>
